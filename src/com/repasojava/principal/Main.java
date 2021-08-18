@@ -37,16 +37,19 @@ public class Main {
             System.out.println("*************************************************************");
             System.out.println("Seleccione el idioma de la app");
             System.out.println("ES.Espanol o EN.Inges");
-            String idioma = teclado.nextLine();
+            String idioma = teclado.nextLine().toUpperCase();
             
-            if (idioma.length() > 2) {
-                idioma = idioma.substring(0, 2).toUpperCase();
-                propertiesLanguage.load(ConfigProperties.getResourceAsInputStream(
-                        FILE_LANGUAGE_PROP.replace(@selection, idioma)));
+            if (idioma.length() >= 2 && (idioma.startsWith("ES")) || (idioma.startsWith("EN"))) {
+                idioma = idioma.substring(0, 2);
             } else {
                 idioma = FILE_LANGUAGE_DEFAULT;
             }
             
+            propertiesLanguage.load(ConfigProperties.getResourceAsInputStream(
+                        FILE_LANGUAGE_PROP.replace("@selection", idioma)));
+            
+            //imprimir el valor de la propiedad
+            System.out.println("El idioma de la pagina web es: " + propertiesLanguage.get("msgWelcome"));
             
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
